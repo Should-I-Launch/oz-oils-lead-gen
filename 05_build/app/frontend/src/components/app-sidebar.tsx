@@ -1,0 +1,70 @@
+import { Link, useLocation } from "react-router-dom";
+import { footerNavLinks, navGroups } from "@/components/app-shared";
+import { LatestChange } from "@/components/latest-change";
+import { LogoIcon } from "@/components/logo";
+import { NavGroup } from "@/components/nav-group";
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarHeader,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+} from "@/components/ui/sidebar";
+import { cn } from "@/lib/utils";
+
+export function AppSidebar() {
+  const { pathname } = useLocation();
+
+  return (
+    <Sidebar
+      className={cn(
+        "*:data-[slot=sidebar-inner]:bg-background",
+        "*:data-[slot=sidebar-inner]:dark:bg-[radial-gradient(60%_18%_at_10%_0%,--theme(--color-foreground/.08),transparent)]",
+        "**:data-[slot=sidebar-menu-button]:[&>span]:text-foreground/75",
+      )}
+      collapsible="icon"
+      variant="sidebar"
+    >
+      <SidebarHeader className="h-14 justify-center border-b px-2">
+        <SidebarMenuButton asChild>
+          <Link to="/admin">
+            <LogoIcon />
+            <span className="font-medium text-foreground!">Efferd</span>
+          </Link>
+        </SidebarMenuButton>
+      </SidebarHeader>
+      <SidebarContent>
+        {navGroups.map((group) => (
+          <NavGroup key={group.label} {...group} />
+        ))}
+      </SidebarContent>
+      <SidebarFooter className="gap-0 p-0">
+        <LatestChange />
+        <SidebarMenu className="border-t p-2">
+          {footerNavLinks.map((item) => (
+            <SidebarMenuItem key={item.title}>
+              <SidebarMenuButton
+                asChild
+                className="text-muted-foreground"
+                isActive={item.path === pathname}
+                size="sm"
+              >
+                <Link to={item.path ?? "#"}>
+                  {item.icon}
+                  <span>{item.title}</span>
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          ))}
+        </SidebarMenu>
+        <div className="px-4 pt-4 pb-2 transition-opacity group-data-[collapsible=icon]:pointer-events-none group-data-[collapsible=icon]:opacity-0">
+          <p className="text-nowrap text-[9px] text-muted-foreground">
+            © {new Date().getFullYear()} Efferd LLC
+          </p>
+        </div>
+      </SidebarFooter>
+    </Sidebar>
+  );
+}

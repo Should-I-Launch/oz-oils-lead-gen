@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "dokploy-mcp": {
+      "command": "npx",
+      "args": ["-y", "@dokploy/mcp"],
+      "env": {
+        "DOKPLOY_URL": "https://dokploy.hypajump.ai",
+        "DOKPLOY_API_KEY": "<request-from-team-lead>"
+      }
+    }
+  }
+}

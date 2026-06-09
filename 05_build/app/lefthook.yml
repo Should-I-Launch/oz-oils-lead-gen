@@ -1,0 +1,15 @@
+pre-commit:
+  parallel: true
+  commands:
+    frontend-check:
+      root: frontend/
+      glob: "*.{ts,tsx,js,jsx,json}"
+      run: npx biome check --no-errors-on-unmatched --files-ignore-unknown=true {staged_files}
+    frontend-typecheck:
+      root: frontend/
+      glob: "*.{ts,tsx}"
+      run: npx tsc --noEmit
+    backend-lint:
+      root: backend/
+      glob: "*.py"
+      run: find {staged_files} -not -path '*__pycache__*' -exec python3 -m py_compile {} +

@@ -46,7 +46,7 @@ jobs:
         run: |
           PAYLOAD='{"repo":"${{ github.repository }}","branch":"${{ github.ref_name }}","decks":${{ steps.extract.outputs.payload }}}'
           
-          SIGNATURE=$(echo -n "$PAYLOAD" | openssl dgst -sha256 -hmac "${{ secrets.HERMES_WEBHOOK_SECRET }}" | sed 's/^.* //')
+          SIGNATURE=$(echo -n "$PAYLOAD" | openssl dgst -sha256 -hmac "3f1a4b54b45e70c9a632bce3e2913219e0fa8966ce43c5ff05533b1c4647d760" | sed 's/^.* //')
           
           curl -s -X POST http://170.64.182.105:8644/webhooks/slide-sync \
             -H "Content-Type: application/json" \

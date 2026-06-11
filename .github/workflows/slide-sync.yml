@@ -1,0 +1,57 @@
+name: Slide Sync
+
+on:
+  push:
+    paths:
+      - '**/slides/*/index.tsx'
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Extract changed deck paths
+        id: extract
+        run: |
+          CHANGED=$(git diff --name-only HEAD~1 HEAD 2>/dev/null | grep 'slides/.*/index.tsx' || echo "")
+          
+          if [ -z "$CHANGED" ]; then
+            CHANGED=$(git diff-tree --no-commit-id --name-only -r HEAD | grep 'slides/.*/index.tsx' || echo "")
+          fi
+          
+          if [ -z "$CHANGED" ]; then
+            echo "No slide changes detected."
+            echo "changed_files=" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+          
+          echo "Changed slide files:"
+          echo "$CHANGED"
+          
+          PAYLOAD=$(echo "$CHANGED" | while read -r path; do
+            DECK_ID=$(echo "$path" | sed -n 's|.*slides/\(.*\)/index\.tsx|\1|p')
+            echo "{\"deck_id\":\"$DECK_ID\",\"path\":\"$path\"}"
+          done | jq -s '.')
+          
+          echo "payload<<EOF" >> $GITHUB_OUTPUT
+          echo "$PAYLOAD" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+          echo "changed_files=$CHANGED" >> $GITHUB_OUTPUT
+
+      - name: Notify Hermes
+        if: steps.extract.outputs.changed_files != ''
+        run: |
+          PAYLOAD='{"repo":"${{ github.repository }}","branch":"${{ github.ref_name }}","decks":${{ steps.extract.outputs.payload }}}'
+          
+          SIGNATURE=$(echo -n "$PAYLOAD" | openssl dgst -sha256 -hmac "${{ secrets.HERMES_WEBHOOK_SECRET }}" | sed 's/^.* //')
+          
+          curl -s -X POST http://170.64.182.105:8644/webhooks/slide-sync \
+            -H "Content-Type: application/json" \
+            -H "X-Hub-Signature-256: sha256=$SIGNATURE" \
+            -d "$PAYLOAD" \
+            --connect-timeout 10 --max-time 30
+          
+          echo "Webhook sent."

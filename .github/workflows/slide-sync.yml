@@ -11,16 +11,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 2
+          fetch-depth: 0
 
       - name: Extract changed deck paths
         id: extract
         run: |
-          CHANGED=$(git diff --name-only HEAD~1 HEAD 2>/dev/null | grep 'slides/.*/index.tsx' || echo "")
-          
-          if [ -z "$CHANGED" ]; then
-            CHANGED=$(git diff-tree --no-commit-id --name-only -r HEAD | grep 'slides/.*/index.tsx' || echo "")
-          fi
+          CHANGED=$(git diff --name-only ${{ github.event.before }} ${{ github.event.after }} 2>/dev/null | grep 'slides/.*/index.tsx' || echo "")
           
           if [ -z "$CHANGED" ]; then
             echo "No slide changes detected."

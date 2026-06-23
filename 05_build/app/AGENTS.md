@@ -51,3 +51,17 @@ Alembic autogenerate. Models live in each feature's `models.py` or `models/` pac
 ## References
 
 Full docs in `docs/`. Conventions are non-negotiable — flag violations, don't silently follow.
+
+
+## Cwd inside seeded app
+
+Agents often start inside the seeded app directory, where parent AGENTS files are not auto-loaded. Before deployment work, determine the app layout:
+
+```bash
+pwd
+# standalone: repo root contains docker-compose.yml, backend/, frontend/ -> APP_DIR=.
+# nested old template: path ends with 05_build/app -> APP_DIR=05_build/app
+# nested current template: path ends with 06_build/app -> APP_DIR=06_build/app
+```
+
+If `../deployment.md` exists, read it. It is the stage-level source of truth for Dokploy Compose Path, Watch Paths, SOPS location, and env placement. Never assume repo-root deployment just because this AGENTS.md is loaded from `app/`.

@@ -69,3 +69,10 @@ FastAPI + Postgres backend, Vite + React SPA + shadcn/ui frontend, Clerk auth (t
 
 - Engineering Response deck: `03_engineering_response/slides/<kebab-id>/`
 - Stage outputs keep the names defined in each stage's `AGENTS.md`.
+
+
+## Deployment (stage 05)
+
+The project-template layout is nested by design. The deployable app is `05_build/app`, not repo root. Use `05_build/deployment.md` for Dokploy/SOPS rules. Production env and SOPS files belong beside the app compose file: `05_build/app/.env`, `05_build/app/.env.example`, and `05_build/app/.env.production.sops.yaml`.
+
+Pitfall: do not configure Dokploy Watch Paths as `**`; earlier stages are pre-sales/contract/project material and should not redeploy production.

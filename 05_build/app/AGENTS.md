@@ -64,4 +64,4 @@ pwd
 # nested current template: path ends with 06_build/app -> APP_DIR=06_build/app
 ```
 
-If `../deployment.md` exists, read it. It is the stage-level source of truth for Dokploy Compose Path, Watch Paths, SOPS location, and env placement. Never assume repo-root deployment just because this AGENTS.md is loaded from `app/`.
+For deployment work, read this app's own docs: `docs/architecture/deployment.md` and `docs/optional-features/dokploy-deployment/README.md`. If `../AGENTS.md` exists, also read it for stage-specific context. Never assume repo-root deployment just because this AGENTS.md is loaded from `app/`.

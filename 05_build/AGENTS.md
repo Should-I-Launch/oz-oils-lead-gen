@@ -19,14 +19,14 @@ To seed the app when build starts, use the `hypajump-project-initializer` skill 
 
 ## Deployment
 
-Read `deployment.md` before configuring Dokploy, SOPS, GitHub Actions, or production env. In this project-template layout, `APP_DIR=05_build/app` from repo root. Dokploy Compose Path must be `05_build/app/docker-compose.yml`, Watch Paths should be `05_build/app/**`, and production env/SOPS files belong inside `app/`, not repo root.
+After the app is seeded, read the deployment docs inside `app/`: `app/docs/architecture/deployment.md` and `app/docs/optional-features/dokploy-deployment/README.md`. In this project-template layout, `APP_DIR=05_build/app` from repo root. Dokploy Compose Path must be `05_build/app/docker-compose.yml`, Watch Paths should be `05_build/app/**`, and production env/SOPS files belong inside `app/`, not repo root.
 
 ## Need other context?
 
 - What to build / engineering design: read `../03_engineering_response/`.
 - Agreed scope/commercials: read `../04_commercial_proposal/`.
 - Project map: read `../AGENTS.md`.
-- Deployment rules: read `deployment.md`.
+- Deployment rules after seeding: read `app/docs/architecture/deployment.md` and `app/docs/optional-features/dokploy-deployment/README.md`.
 
 ## Tech stack
 

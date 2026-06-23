@@ -73,6 +73,6 @@ FastAPI + Postgres backend, Vite + React SPA + shadcn/ui frontend, Clerk auth (t
 
 ## Deployment (stage 05)
 
-The project-template layout is nested by design. The deployable app is `05_build/app`, not repo root. Use `05_build/deployment.md` for Dokploy/SOPS rules. Production env and SOPS files belong beside the app compose file: `05_build/app/.env`, `05_build/app/.env.example`, and `05_build/app/.env.production.sops.yaml`.
+The project-template layout is nested by design. The deployable app is `05_build/app`, not repo root. Deployment documentation lives inside the seeded app from `hypajump_template`: `05_build/app/docs/architecture/deployment.md` and `05_build/app/docs/optional-features/dokploy-deployment/README.md`. Production env and SOPS files belong beside the app compose file: `05_build/app/.env`, `05_build/app/.env.example`, and `05_build/app/.env.production.sops.yaml`.
 
 Pitfall: do not configure Dokploy Watch Paths as `**`; earlier stages are pre-sales/contract/project material and should not redeploy production.
